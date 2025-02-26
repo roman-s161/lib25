@@ -7,6 +7,10 @@ class Book(models.Model):
 
     def __str__(self):
         return self.title
+    
+    class Meta:
+        verbose_name = 'Книга'
+        verbose_name_plural = 'Книги'
 
 
 class Reader(models.Model):
@@ -16,6 +20,10 @@ class Reader(models.Model):
 
     def __str__(self):
         return self.name
+    
+    class Meta:
+        verbose_name = 'Читатель'
+        verbose_name_plural = 'Читатели'
 
 
 

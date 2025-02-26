@@ -1,4 +1,3 @@
-
 from .forms import BookForm, ReaderForm
 from .models import Book
 from .models import Reader
@@ -6,9 +5,6 @@ from django.contrib.auth.decorators import login_required, user_passes_test
 from django.shortcuts import render, redirect, get_object_or_404
 from .forms import BookIdForm, ReaderIdForm, SelectBookReaderForm
 
-
-def test(request):
-    return render(request,'test.html')
 
 def select_book_reader(request):
     if request.method == 'POST':
