@@ -1,0 +1,45 @@
+body {
+  font-family: "Amatic SC", sans-serif;
+
+  font-size: 25px;
+  background-color: black;
+  color: white;
+}
+
+/*li {
+    list-style-type: none;
+   }
+   li:before {
+    content: "\1F4D6";
+    padding-right: 10px;
+   }
+*/
+
+.book-title {
+  color: gold;
+}
+
+.book-author {
+  color: rgb(166, 33, 157);
+}
+
+.book-id {
+  color: red;
+}
+
+.clrbtn {
+  background-color: rgb(212, 230, 115);
+  color: black;
+  font-weight: 700;
+  font-size: 25px;
+  margin-left: 3vw;
+  transition: all 0.3s ease;
+}
+.clrbtn:hover {
+  background-color: rgb(245, 188, 66);
+}
+
+@font-face {
+  font-family: "RubikBubbles-Regular";
+  src: url("static/fonts/RubikBubbles-Regular.ttf") format("truetype");
+}

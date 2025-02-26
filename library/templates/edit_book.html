@@ -1,0 +1,14 @@
+{% extends "wrapper.html" %}
+
+{% block content %}
+<div class="w-50 mx-auto">
+  <h1>Редактировать информацию о книге</h1>
+  <form action="" method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <input type="submit" class="btn btn-danger" value="Сохранить">
+  </form>
+  <br>
+<a href="http://127.0.0.1:8000/" class="btn btn-warning"> На главную </a>
+</div>
+{% endblock %}

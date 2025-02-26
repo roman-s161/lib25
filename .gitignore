@@ -1,0 +1,6 @@
+.env
+.venvLibrary
+.vscode
+*.pyc
+__pycache__
+media/

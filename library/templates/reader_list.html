@@ -1,0 +1,20 @@
+{% extends "wrapper.html" %}
+
+{% block content %}
+<div class="w-50 mx-auto" xmlns="http://www.w3.org/1999/html">
+    <h1>Список читателей</h1>
+    <ol>
+        {% for reader in readers %}
+        <li>
+            <span class="book-author">{{ reader.name }}</span>
+            <span class="book-id">id : {{ reader.id }} </span>
+        </li>
+        <hr>
+        {% empty %}
+        <li>Нет доступных читателей</li>
+        {% endfor %}
+    </ol>
+    <br>
+    <a href="http://127.0.0.1:8000/" class="btn btn-warning"> На главную </a>
+</div>
+{% endblock %}

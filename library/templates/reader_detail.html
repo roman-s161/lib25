@@ -1,0 +1,19 @@
+{% extends "wrapper.html" %}
+
+{% block content %}
+<div class="w-50 mx-auto">
+<h1>О читателе</h1>
+<p>ФИО: {{ reader.name }}</p>
+<p>Email: {{ reader.email }}</p>
+
+<h2>Прочитанные книги:</h2>
+<ul>
+  {% for book in books %}
+    <li>{{ book.title }}</li>  <!-- Отображаем название книги -->
+  {% empty %}
+    <li>No books read yet.</li>
+  {% endfor %}
+</ul>
+<a href="http://127.0.0.1:8000/" class="btn btn-warning"> На главную </a>
+</div>
+{% endblock %}

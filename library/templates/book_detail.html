@@ -1,0 +1,11 @@
+{% extends "wrapper.html" %}
+
+{% block content %}
+<div class="w-50 mx-auto">
+<h1>{{ book.title }}</h1>
+<p>Автор: {{ author }}</p>
+<p>Дата публикации: {{ publication_date }}</p>
+<br>
+<a href="http://127.0.0.1:8000/" class="btn btn-warning"> На главную </a>
+</div>
+{% endblock%}

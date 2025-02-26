@@ -1,0 +1,83 @@
+{% extends "wrapper.html" %} {% block content %}
+<div class="menu">
+  <div class="itemMenu">
+    <h1>Добро пожаловать в веб-приложение "Библиотека"</h1>
+  </div>
+  <div class="itemMenu m-3"><h2>Меню:</h2></div>
+
+  <div class="itemMenu">
+    <a
+      href="http://127.0.0.1:8000/book_list"
+      role="button"
+      class="btn clrbtn w-100 myButton"
+    >
+      Список книг
+    </a>
+  </div>
+  <div class="itemMenu">
+    <a
+      href="http://127.0.0.1:8000/reader_list"
+      class="btn clrbtn w-100 mt-3 myButton"
+    >
+      Список читателей
+    </a>
+  </div>
+  <div class="itemMenu">
+    <a
+      href="http://127.0.0.1:8000/add_book/"
+      class="btn clrbtn w-100 mt-3 myButton"
+    >
+      Добавить книгу
+    </a>
+  </div>
+  <div class="itemMenu">
+    <a
+      href="http://127.0.0.1:8000/add_reader/"
+      class="btn clrbtn w-100 mt-3 myButton"
+    >
+      Добавить читателя
+    </a>
+  </div>
+  <div class="itemMenu">
+    <a
+      href="http://127.0.0.1:8000/edit_book/"
+      class="btn clrbtn w-100 mt-3 myButton"
+    >
+      Редактировать информацию о книге
+    </a>
+  </div>
+  <div class="itemMenu">
+    <a
+      href="http://127.0.0.1:8000/edit_reader/"
+      class="btn clrbtn w-100 mt-3 myButton"
+    >
+      Редактировать информацию о читателе
+    </a>
+  </div>
+  <div class="itemMenu">
+    <a
+      href="http://127.0.0.1:8000/delete_book"
+      class="btn clrbtn w-100 mt-3 myButton"
+    >
+      Удалить книгу из списка
+    </a>
+  </div>
+  <div class="itemMenu">
+    <a
+      href="http://127.0.0.1:8000/delete_reader/"
+      class="btn clrbtn w-100 mt-3 myButton"
+    >
+      Удалить читателя из списка
+    </a>
+  </div>
+  <div class="itemMenu">
+    <a
+      href="http://127.0.0.1:8000/select_book_reader/"
+      class="btn clrbtn w-100 mt-3 mb-3 myButton"
+    >
+      Просмотр информации о книге или читателе
+    </a>
+  </div>
+</div>
+
+{% endblock %}

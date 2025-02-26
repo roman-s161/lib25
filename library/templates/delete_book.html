@@ -1,0 +1,15 @@
+{% extends "wrapper.html" %}
+
+{% block content %}
+<div class="w-50 mx-auto">
+    <h1>Удаление книги</h1>
+    <form action="{% url 'delete_book' %}" method="post">
+        {% csrf_token %}
+        <label for="book_id">Введите ID книги:</label>
+        <input type="number" id="book_id" name="book_id" required>
+        <input class="btn btn-danger" type="submit"  value="Продолжить">
+    </form>
+<br>
+<a href="http://127.0.0.1:8000/" class="btn btn-warning"> На главную </a>
+</div>
+{% endblock %}

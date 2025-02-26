@@ -1,0 +1,17 @@
+{% extends "wrapper.html" %}
+
+{% block content %}
+
+<div class="w-50 text-end ">
+    <h1>Добавить книгу</h1>
+    <br>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+
+        <button type="submit" class="btn btn-success">Добавить книгу</button>
+    </form>
+    <br>
+    <a href="http://127.0.0.1:8000/" class="btn btn-warning"> На главную </a>
+</div>
+{% endblock %}
