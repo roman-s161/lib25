@@ -5,6 +5,50 @@ from django.contrib.auth.decorators import login_required, user_passes_test
 from django.shortcuts import render, redirect, get_object_or_404
 from .forms import BookIdForm, ReaderIdForm, SelectBookReaderForm
 
+def index(request):
+    return render(request, 'index.html')
+
+def book_list(request):
+    books = Book.objects.all()
+    return render(request, 'library/book_list.html', {'books': books})
+
+def reader_list(request):
+    readers = Reader.objects.all()
+    return render(request, 'library/reader_list.html', {'readers': readers})
+
+@login_required
+@user_passes_test(lambda u: u.groups.filter(name='Администраторы').exists())
+def add_book(request):
+    if request.method == 'POST':
+        form = BookForm(request.POST)
+        if form.is_valid():
+            title = form.cleaned_data.get('title')
+            author = form.cleaned_data.get('author')
+
+            # Проверяем, существует ли книга с таким названием и автором
+            if Book.objects.filter(title=title, author=author).exists():
+                return render(request,'library/the object already exists.html')
+            # Если книга не существует, сохраняем ее
+            form.save()
+            # book = form.save()  # Сохраняем объект книги в переменную book
+            # book_id = book.id  # Получаем ID сохраненной книги
+            return redirect('library:book_list')  # Перенаправляем на страницу со списком книг
+    else:
+        form = BookForm()
+    return render(request, 'library/add_book.html', {'form': form})
+
+@login_required
+@user_passes_test(lambda u: u.groups.filter(name='Администраторы').exists())
+def add_reader(request):
+    if request.method == 'POST':
+        form = ReaderForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('library:reader_list')
+    else:
+        form = ReaderForm()
+    return render(request, 'library/add_reader.html', {'form': form})
+
 
 def select_book_reader(request):
     if request.method == 'POST':
@@ -52,8 +96,7 @@ def edit_reader_form(request):
         form = ReaderIdForm()
     return render(request, 'edit_reader_form.html', {'form': form})
 
-def index(request):
-    return render(request, 'index.html')
+
 
 @login_required
 @user_passes_test(lambda u: u.groups.filter(name='Администраторы').exists())
@@ -89,50 +132,15 @@ def confirm_delete_reader(request, reader_id):
         return redirect('reader_list')  # Перенаправление на страницу со списком читателей
     return render(request, 'confirm_delete_reader.html', {'reader': reader, 'reader_id': reader_id})
 
-@login_required
-@user_passes_test(lambda u: u.groups.filter(name='Администраторы').exists())
-def add_book(request):
-    if request.method == 'POST':
-        form = BookForm(request.POST)
-        if form.is_valid():
-            title = form.cleaned_data.get('title')
-            author = form.cleaned_data.get('author')
-
-            # Проверяем, существует ли книга с таким названием и автором
-            if Book.objects.filter(title=title, author=author).exists():
-                return render(request,'the object already exists.html')
-            book = form.save()  # Сохраняем объект книги в переменную book
-            book_id = book.id  # Получаем ID сохраненной книги
-            return redirect('book_list')  # Перенаправляем на страницу со списком книг
-    else:
-        form = BookForm()
-    return render(request, 'add_book.html', {'form': form})
-
-@login_required
-@user_passes_test(lambda u: u.groups.filter(name='Администраторы').exists())
-def add_reader(request):
-    if request.method == 'POST':
-        form = ReaderForm(request.POST)
-        if form.is_valid():
-            name = form.cleaned_data.get('name')
-            email = form.cleaned_data.get('email')
-            if Reader.objects.filter(name=name, email=email).exists():
-                return render(request,'the object already exists.html')
-            reader = form.save()
-            return redirect('reader_list')
-    else:
-        form = ReaderForm()
-    return render(request, 'add_reader.html', {'form': form})
-
-def reader_list(request):
-    readers = Reader.objects.all()
-    return render(request, 'reader_list.html', {'readers': readers})
 
 
 
-def book_list(request):
-    books = Book.objects.all()  # Получаем все объекты книг из базы данных
-    return render(request, 'book_list.html', {'books': books})
+
+
+
+
+
+
 
 
 @login_required

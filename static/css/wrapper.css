@@ -1,19 +1,28 @@
 body {
+  padding: 5%;
   font-family: "Amatic SC", sans-serif;
-
   font-size: 25px;
-  background-color: black;
+  background-image: url("/static/images/backgroundMainLibrary2.jpg");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-attachment: fixed;
   color: white;
 }
 
-/*li {
-    list-style-type: none;
-   }
-   li:before {
-    content: "\1F4D6";
-    padding-right: 10px;
-   }
-*/
+.menu {
+  display: grid;
+  grid-template-columns: 2fr 3fr 2fr;
+  justify-content: center;
+}
+.itemMenu {
+  grid-column: 2;
+  text-align: center;
+}
+
+.itemMenu h1 {
+  font-weight: 800;
+}
 
 .book-title {
   color: gold;
