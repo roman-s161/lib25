@@ -1,4 +1,5 @@
-{% extends "wrapper.html" %} {% block content %}
+{% extends "wrapper.html" %}
+{% comment %}  {% block content %}
 <div class="menu">
   <div class="itemMenu">
     <h1>Добро пожаловать в веб-приложение "Библиотека"</h1>
@@ -80,4 +81,56 @@
   </div>
 </div>
 
+{% endblock %} {% endcomment %}
+
+
+{% block content %}
+<div class="text-center mb-5">
+    <h1 class="display-4">Библиотечная система</h1>
+    <p class="lead">Управление книгами и читателями</p>
+</div>
+
+<div class="menu-grid">
+    <!-- Книги -->
+    <div class="card menu-section">
+        <div class="card-body">
+            <h3 class="card-title"><i class="mdi mdi-book"></i> Книги</h3>
+            <div class="d-grid gap-2">
+                <a href="{{BASE_URL}}/book/book_list/" class="btn action-button">
+                    <i class="mdi mdi-format-list-bulleted"></i> Список книг
+                </a>
+                <a href="{{BASE_URL}}/book/add_book/" class="btn action-button">
+                    <i class="mdi mdi-plus"></i> Добавить книгу
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Читатели -->
+    <div class="card menu-section">
+        <div class="card-body">
+            <h3 class="card-title"><i class="mdi mdi-account-group"></i> Читатели</h3>
+            <div class="d-grid gap-2">
+                <a href="{{BASE_URL}}/reader/reader_list/" class="btn action-button">
+                    <i class="mdi mdi-account-multiple"></i> Список читателей
+                </a>
+                <a href="{{BASE_URL}}/reader/add_reader/" class="btn action-button">
+                    <i class="mdi mdi-account-plus"></i> Добавить читателя
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Управление -->
+    <div class="card menu-section">
+        <div class="card-body">
+            <h3 class="card-title"><i class="mdi mdi-cog"></i> Управление</h3>
+            <div class="d-grid gap-2">
+                <a href="{{BASE_URL}}/select_book_reader/" class="btn action-button">
+                    <i class="mdi mdi-magnify"></i> Поиск информации
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}
