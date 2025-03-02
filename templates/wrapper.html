@@ -78,11 +78,13 @@
           </form>
         </div>
       {% else %}
-      <div class="ml-auto">
-        <a class="navbar-brand" href="accounts/login">
-          <i class="mdi"></i> войти/зарегистрироваться
-        </a>
-      </div>
+        {% if request.path != '/accounts/login/' and request.path != '/accounts/register/' %}
+        <div class="ml-auto">
+          <a class="navbar-brand" href="accounts/login">
+            <i class="mdi"></i> войти/зарегистрироваться
+          </a>
+        </div>
+        {% endif %}
       {% endif %}
     </div>
   </nav>

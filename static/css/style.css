@@ -51,3 +51,9 @@ body {
 .nav_bg {
     background-color: var(--primary-color);
 }
+
+.btn.nav_bg:hover {
+    color: #000 !important;
+    background: var(--secondary-color);
+  }
+  
