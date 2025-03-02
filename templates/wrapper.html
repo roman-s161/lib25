@@ -69,14 +69,21 @@
           <i class="mdi "></i> Контакты
         </a>
       </div>
+      {% if user.is_authenticated %}
+        <div class="ml-auto">
+          <span class="navbar-text">Привет, {{ user.username }}!</span>
+          <form action="{% url 'accounts:logout' %}" method="post" style="display:inline;">
+            {% csrf_token %}
+            <button class="navbar-brand btn btn-link" type="submit">Выход</button>
+          </form>
+        </div>
+      {% else %}
       <div class="ml-auto">
-        <a class="navbar-brand" href="#">
-          <i class="mdi"></i> зарегистрироваться
-        </a>
-        <a class="navbar-brand" href="#">
-          <i class="mdi"></i> войти
+        <a class="navbar-brand" href="accounts/login">
+          <i class="mdi"></i> войти/зарегистрироваться
         </a>
       </div>
+      {% endif %}
     </div>
   </nav>
   
