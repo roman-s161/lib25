@@ -86,8 +86,8 @@
 
 {% block content %}
 <div class="text-center mb-5">
-    <h1 class="display-4">Библиотечная система</h1>
-    <p class="lead">Управление книгами и читателями</p>
+    <h1 class="display-4">Добро пожаловать в Библиотеку</h1>
+    <p class="lead">меню:</p>
 </div>
 
 <div class="menu-grid">
@@ -129,7 +129,15 @@
                 <a href="{{BASE_URL}}/select_book_reader/" class="btn action-button">
                     <i class="mdi mdi-magnify"></i> Поиск информации
                 </a>
-            </div>
+                <a href="{{BASE_URL}}/book/delete_book/" class="btn action-button">
+                  <i class="mdi mdi-delete"></i> Удалить книгу
+              </a>
+              <a href="{{BASE_URL}}/reader/delete_reader/" class="btn action-button">
+                <i class="mdi mdi-delete"></i> Удалить читателя
+            </a>
+            
+            
+        </div>
         </div>
     </div>
 </div>

@@ -17,7 +17,7 @@ def reader_list(request):
     return render(request, 'library/reader_list.html', {'readers': readers})
 
 @login_required
-@user_passes_test(lambda u: u.groups.filter(name='Администраторы').exists())
+@user_passes_test(lambda u: u.groups.filter(name__in=['Администраторы', 'Библиотекари']).exists())
 def add_book(request):
     if request.method == 'POST':
         form = BookForm(request.POST)
@@ -38,7 +38,7 @@ def add_book(request):
     return render(request, 'library/add_book.html', {'form': form})
 
 @login_required
-@user_passes_test(lambda u: u.groups.filter(name='Администраторы').exists())
+@user_passes_test(lambda u: u.groups.filter(name__in=['Администраторы', 'Библиотекари']).exists())
 def add_reader(request):
     if request.method == 'POST':
         form = ReaderForm(request.POST)
@@ -50,7 +50,7 @@ def add_reader(request):
     return render(request, 'library/add_reader.html', {'form': form})
 
 @login_required
-@user_passes_test(lambda u: u.groups.filter(name='Администраторы').exists())
+@user_passes_test(lambda u: u.groups.filter(name__in=['Администраторы', 'Библиотекари']).exists())
 def edit_book(request, book_id):
     book = get_object_or_404(Book, id=book_id)
     if request.method == 'POST':
@@ -75,7 +75,7 @@ def edit_book_form(request):
     return render(request, 'library/edit_book_form.html', {'form': form})
 
 @login_required
-@user_passes_test(lambda u: u.groups.filter(name='Библиотекари').exists())
+@user_passes_test(lambda u: u.groups.filter(name__in=['Администраторы', 'Библиотекари']).exists())
 def book_detail(request, book_id):
     book = get_object_or_404(Book, id=book_id)
     author = book.author
@@ -150,20 +150,8 @@ def confirm_delete_reader(request, reader_id):
         return redirect('library:reader:reader_list')  # Перенаправление на страницу со списком читателей
     return render(request, 'library/confirm_delete_reader.html', {'reader': reader, 'reader_id': reader_id})
 
-
-
-
-
-
-
-
-
-
-
-
-
 @login_required
-@user_passes_test(lambda u: u.groups.filter(name='Администраторы').exists())
+@user_passes_test(lambda u: u.groups.filter(name__in=['Администраторы', 'Библиотекари']).exists())
 def edit_reader(request, reader_id):
     reader = get_object_or_404(Reader, id=reader_id)
     if request.method == 'POST':
@@ -175,12 +163,8 @@ def edit_reader(request, reader_id):
         form = ReaderForm(instance=reader)
     return render(request, 'library/edit_reader.html', {'form': form})
 
-
-
-
-
 @login_required
-@user_passes_test(lambda u: u.groups.filter(name='Библиотекари').exists())
+@user_passes_test(lambda u: u.groups.filter(name__in=['Администраторы', 'Библиотекари']).exists())
 def reader_detail(request, reader_id):
     reader = get_object_or_404(Reader, id=reader_id)
     books = reader.books_read.all()

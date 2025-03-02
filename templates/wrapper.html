@@ -56,13 +56,30 @@
     <title>Библиотека</title>
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-        <div class="container">
-            <a class="navbar-brand" href="/">
-                <i class="mdi mdi-book-open-page-variant"></i> Библиотека
-            </a>
-        </div>
-    </nav>
+  <nav class="navbar navbar-expand-lg navbar-dark nav_bg">
+    <div class="container">
+      <div>
+        <a class="navbar-brand" href="/">
+          <i class="mdi mdi-book-open-page-variant"></i> Библиотека
+        </a>
+        <a class="navbar-brand" href="#">
+          <i class="mdi "></i> О нас
+        </a>
+        <a class="navbar-brand" href="#">
+          <i class="mdi "></i> Контакты
+        </a>
+      </div>
+      <div class="ml-auto">
+        <a class="navbar-brand" href="#">
+          <i class="mdi"></i> зарегистрироваться
+        </a>
+        <a class="navbar-brand" href="#">
+          <i class="mdi"></i> войти
+        </a>
+      </div>
+    </div>
+  </nav>
+  
     
     <main class="container py-4">
         {% block content %}{% endblock %}

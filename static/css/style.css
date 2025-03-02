@@ -47,3 +47,7 @@ body {
     background: var(--secondary-color);
     transform: scale(1.05);
 }
+
+.nav_bg {
+    background-color: var(--primary-color);
+}
