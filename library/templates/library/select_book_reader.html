@@ -3,12 +3,12 @@
 {% block content %}
 <div class="w-50 mx-auto">
     <h1>Информация о книге или читателе</h1>
-    <form action="{% url 'select_book_reader' %}" method="post">
+    <form action="{% url 'library:select_book_reader' %}" method="post">
         {% csrf_token %}
         {{ form.as_p }}
         <input class="btn btn-success" type="submit" value="Выбрать">
     </form>
 <br>
-<a href="http://127.0.0.1:8000/" class="btn btn-warning"> На главную </a>
+<a href="{{BASE_URL}}/" class="btn btn-warning"> На главную </a>
 </div>
 {% endblock %}

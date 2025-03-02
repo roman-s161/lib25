@@ -3,13 +3,13 @@
 {% block content %}
 <div class="w-50 mx-auto">
     <h1>Удаление читателя</h1>
-    <form action="{% url 'delete_reader' %}" method="post">
+    <form action="{% url 'library:reader:delete_reader' %}" method="post">
         {% csrf_token %}
         <label for="reader_id">Введите ID читателя:</label>
         <input type="number" id="reader_id" name="reader_id" required>
         <input class="btn btn-danger" type="submit"  value="Продолжить">
     </form>
 <br>
-<a href="http://127.0.0.1:8000/" class="btn btn-warning"> На главную </a>
+<a href="{{BASE_URL}}/" class="btn btn-warning"> На главную </a>
 </div>
 {% endblock %}
