@@ -26,6 +26,12 @@ class ReaderForm(forms.ModelForm):
 
 
 class BookForm(forms.ModelForm):
+    publication_date = forms.DateField(
+        label='Дата публикации',
+        input_formats=["%d.%m.%Y"],
+        widget=forms.DateInput(format="%d.%m.%Y", attrs={'placeholder': 'дд.мм.гггг'}),
+        required=False  # если дата не обязательно
+    )
     class Meta:
         model = Book
         fields = ['title', 'author', 'publication_date']

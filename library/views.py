@@ -4,6 +4,8 @@ from .models import Reader
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.shortcuts import render, redirect, get_object_or_404
 from .forms import BookIdForm, ReaderIdForm, SelectBookReaderForm
+from django.contrib import messages
+
 
 def index(request):
     return render(request, 'index.html')
@@ -17,7 +19,7 @@ def reader_list(request):
     return render(request, 'library/reader_list.html', {'readers': readers})
 
 @login_required
-@user_passes_test(lambda u: u.groups.filter(name__in=['Администраторы', 'Библиотекари']).exists())
+@user_passes_test(lambda u: u.is_superuser or u.groups.filter(name__in=['Администраторы', 'Библиотекари']).exists())
 def add_book(request):
     if request.method == 'POST':
         form = BookForm(request.POST)
@@ -25,20 +27,19 @@ def add_book(request):
             title = form.cleaned_data.get('title')
             author = form.cleaned_data.get('author')
 
-            # Проверяем, существует ли книга с таким названием и автором
             if Book.objects.filter(title=title, author=author).exists():
-                return render(request,'library/the object already exists.html')
-            # Если книга не существует, сохраняем ее
+                messages.error(request, 'Такая книга уже существует')
+                return render(request,'library/add_book.html', {'form': form})
+            
             form.save()
-            # book = form.save()  # Сохраняем объект книги в переменную book
-            # book_id = book.id  # Получаем ID сохраненной книги
-            return redirect('library:book:book_list')  # Перенаправляем на страницу со списком книг
+            messages.success(request, 'Новая книга успешно добавлена', extra_tags='success')
+            return redirect('library:book:book_list')
     else:
         form = BookForm()
     return render(request, 'library/add_book.html', {'form': form})
 
 @login_required
-@user_passes_test(lambda u: u.groups.filter(name__in=['Администраторы', 'Библиотекари']).exists())
+@user_passes_test(lambda u: u.is_superuser or u.groups.filter(name__in=['Администраторы', 'Библиотекари']).exists())
 def add_reader(request):
     if request.method == 'POST':
         form = ReaderForm(request.POST)
@@ -50,13 +51,14 @@ def add_reader(request):
     return render(request, 'library/add_reader.html', {'form': form})
 
 @login_required
-@user_passes_test(lambda u: u.groups.filter(name__in=['Администраторы', 'Библиотекари']).exists())
+@user_passes_test(lambda u: u.is_superuser or u.groups.filter(name__in=['Администраторы', 'Библиотекари']).exists())
 def edit_book(request, book_id):
     book = get_object_or_404(Book, id=book_id)
     if request.method == 'POST':
         form = BookForm(request.POST, instance=book)
         if form.is_valid():
             form.save()
+            messages.success(request, 'Книга успешно отредактирована')
             return redirect('library:book:book_detail', book_id=book_id)
     else:
         form = BookForm(instance=book)
@@ -75,7 +77,7 @@ def edit_book_form(request):
     return render(request, 'library/edit_book_form.html', {'form': form})
 
 @login_required
-@user_passes_test(lambda u: u.groups.filter(name__in=['Администраторы', 'Библиотекари']).exists())
+@user_passes_test(lambda u: u.is_superuser or u.groups.filter(name__in=['Администраторы', 'Библиотекари']).exists())
 def book_detail(request, book_id):
     book = get_object_or_404(Book, id=book_id)
     author = book.author
@@ -117,13 +119,14 @@ def edit_reader_form(request):
     return render(request, 'library/edit_reader_form.html', {'form': form})
 
 @login_required
-@user_passes_test(lambda u: u.groups.filter(name='Администраторы').exists())
+@user_passes_test(lambda u: u.is_superuser or u.groups.filter(name='Администраторы').exists())
 def delete_book(request):
     if request.method == 'POST':
         book_id = request.POST['book_id']
         if not Book.objects.filter(id=book_id).exists():
             return render(request, 'library/object_id_not_found.html')
         return redirect('library:book:confirm_delete_book', book_id=book_id)
+    messages.warning(request, 'Книга удалена из библиотеки')
     return render(request, 'library/delete_book.html')
 
 def confirm_delete_book(request, book_id):
@@ -134,7 +137,7 @@ def confirm_delete_book(request, book_id):
     return render(request, 'library/confirm_delete_book.html', {'book': book, 'book_id': book_id})
 
 @login_required
-@user_passes_test(lambda u: u.groups.filter(name='Администраторы').exists())
+@user_passes_test(lambda u: u.is_superuser or u.groups.filter(name='Администраторы').exists())
 def delete_reader(request):
     if request.method == 'POST':
         reader_id = request.POST['reader_id']
@@ -151,7 +154,7 @@ def confirm_delete_reader(request, reader_id):
     return render(request, 'library/confirm_delete_reader.html', {'reader': reader, 'reader_id': reader_id})
 
 @login_required
-@user_passes_test(lambda u: u.groups.filter(name__in=['Администраторы', 'Библиотекари']).exists())
+@user_passes_test(lambda u: u.is_superuser or u.groups.filter(name__in=['Администраторы', 'Библиотекари']).exists())
 def edit_reader(request, reader_id):
     reader = get_object_or_404(Reader, id=reader_id)
     if request.method == 'POST':
@@ -164,7 +167,7 @@ def edit_reader(request, reader_id):
     return render(request, 'library/edit_reader.html', {'form': form})
 
 @login_required
-@user_passes_test(lambda u: u.groups.filter(name__in=['Администраторы', 'Библиотекари']).exists())
+@user_passes_test(lambda u: u.is_superuser or u.groups.filter(name__in=['Администраторы', 'Библиотекари']).exists())
 def reader_detail(request, reader_id):
     reader = get_object_or_404(Reader, id=reader_id)
     books = reader.books_read.all()

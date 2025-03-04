@@ -92,6 +92,21 @@
     
     <main class="container py-4">
         {% block content %}{% endblock %}
+
+
+
+
+        <!-- Контейнер всплывающих сообщений -->
+        <div id="flash-messages-container">
+          {% if messages %}
+              {% for message in messages %}
+                  <div class="flash-message {% if message.tags %}{{ message.tags }}{% endif %}">
+                      {{ message }}
+                  </div>
+              {% endfor %}
+          {% endif %}
+        </div>
+      
     </main>
 
     <footer class="footer mt-auto py-3 bg-light">

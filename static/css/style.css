@@ -57,3 +57,25 @@ body {
     background: var(--secondary-color);
   }
   
+ /* Стили для всплывающих сообщений */
+ #flash-messages-container {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 1000;
+}
+.flash-message {
+    min-width: 250px;
+    margin: 5px;
+    padding: 15px;
+    color: #fff;
+    border-radius: 4px;
+    opacity: 0.9;
+    transition: opacity 0.5s, transform 0.5s;
+}
+.success {
+    background-color: #28a745;
+}
+.error {
+    background-color: #dc3545;
+}

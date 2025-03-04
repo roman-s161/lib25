@@ -1,89 +1,4 @@
 {% extends "wrapper.html" %}
-{% comment %}  {% block content %}
-<div class="menu">
-  <div class="itemMenu">
-    <h1>Добро пожаловать в веб-приложение "Библиотека"</h1>
-  </div>
-  <div class="itemMenu m-3"><h2>Меню:</h2></div>
-
-  <div class="itemMenu">
-    <a
-      href="{{BASE_URL}}/book/book_list/"
-      role="button"
-      class="btn clrbtn w-100 myButton"
-    >
-      Список книг
-    </a>
-  </div>
-  <div class="itemMenu">
-    <a
-      href="{{BASE_URL}}/reader/reader_list/"
-      class="btn clrbtn w-100 mt-3 myButton"
-    >
-      Список читателей
-    </a>
-  </div>
-  <div class="itemMenu">
-    <a
-      href="{{BASE_URL}}/book/add_book/"
-      class="btn clrbtn w-100 mt-3 myButton"
-    >
-      Добавить книгу
-    </a>
-  </div>
-  <div class="itemMenu">
-    <a
-      href="{{BASE_URL}}/reader/add_reader/"
-      class="btn clrbtn w-100 mt-3 myButton"
-    >
-      Добавить читателя
-    </a>
-  </div>
-  <div class="itemMenu">
-    <a
-      href="{{BASE_URL}}/book/edit_book_form/"
-      class="btn clrbtn w-100 mt-3 myButton"
-    >
-      Редактировать информацию о книге
-    </a>
-  </div>
-  <div class="itemMenu">
-    <a
-      href="{{BASE_URL}}/reader/edit_reader_form/"
-      class="btn clrbtn w-100 mt-3 myButton"
-    >
-      Редактировать информацию о читателе
-    </a>
-  </div>
-  <div class="itemMenu">
-    <a
-      href="{{BASE_URL}}/book/delete_book/"
-      class="btn clrbtn w-100 mt-3 myButton"
-    >
-      Удалить книгу из списка
-    </a>
-  </div>
-  <div class="itemMenu">
-    <a
-      href="{{BASE_URL}}/reader/delete_reader/"
-      class="btn clrbtn w-100 mt-3 myButton"
-    >
-      Удалить читателя из списка
-    </a>
-  </div>
-  <div class="itemMenu">
-    <a
-      href="{{BASE_URL}}/select_book_reader/"
-      class="btn clrbtn w-100 mt-3 mb-3 myButton"
-    >
-      Просмотр информации о книге или читателе
-    </a>
-  </div>
-</div>
-
-{% endblock %} {% endcomment %}
-
-
 {% block content %}
 <div class="text-center mb-5">
     <h1 class="display-4">Добро пожаловать в Библиотеку</h1>
@@ -135,9 +50,7 @@
               <a href="{{BASE_URL}}/reader/delete_reader/" class="btn action-button">
                 <i class="mdi mdi-delete"></i> Удалить читателя
             </a>
-            
-            
-        </div>
+            </div>
         </div>
     </div>
 </div>
