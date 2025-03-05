@@ -29,17 +29,20 @@
         
         <div class="collapse navbar-collapse" id="navbarContent">
             <ul class="navbar-nav me-auto">
-                {% if user.is_authenticated %}
-                    {% if user.role == 'admin' %}
-                        <li class="nav-item"><a class="nav-link" href="/book/add_book/"><i class="mdi mdi-plus"></i> Добавить книгу</a></li>
-                        <li class="nav-item"><a class="nav-link" href="/reader/add_reader/"><i class="mdi mdi-account-plus"></i> Добавить читателя</a></li>
-                        <li class="nav-item"><a class="nav-link" href="/admin/"><i class="mdi mdi-cog"></i> Админ панель</a></li>
-                    {% endif %}
-                    {% if user.role == 'librarian' %}
-                        <li class="nav-item"><a class="nav-link" href="/book/book_list/"><i class="mdi mdi-book"></i> Управление книгами</a></li>
-                        <li class="nav-item"><a class="nav-link" href="/reader/reader_list/"><i class="mdi mdi-account-group"></i> Читатели</a></li>
-                    {% endif %}
-                    <li class="nav-item"><a class="nav-link" href="/my_books/"><i class="mdi mdi-bookmark"></i> Мои книги</a></li>
+              {% if user.is_superuser or user.is_authenticated %}
+              {% if user.is_superuser or user.role == 'librarian' %}
+                  <li class="nav-item"><a class="nav-link" href="/book/book_list/"><i class="mdi mdi-book"></i>Книги</a></li>
+                  <li class="nav-item"><a class="nav-link" href="/reader/reader_list/"><i class="mdi mdi-account-group"></i> Читатели</a></li>
+              {% endif %}
+              {% if user.is_superuser or user.role == 'admin' %}
+                  <li class="nav-item"><a class="nav-link" href="/book/add_book/"><i class="mdi mdi-plus"></i> Доб.нигу</a></li>
+                  <li class="nav-item"><a class="nav-link" href="/reader/add_reader/"><i class="mdi mdi-account-plus"></i>Доб.читателя</a></li>
+                  <li class="nav-item"><a class="nav-link" href="{% url "library:select_book_reader" %}"><i class="mdi mdi-info"></i>Инфо.кн/чит</a></li>
+                  <li class="nav-item"><a class="nav-link" href="{% url "library:book:delete_book" %}"><i class="mdi mdi-delete"></i>Удалить книгу</a></li>
+                  <li class="nav-item"><a class="nav-link" href="{% url "library:reader:delete_reader" %}"><i class="mdi mdi-delete"></i>Удалить читателя</a></li>
+                  <li class="nav-item"><a class="nav-link" href="/admin/"><i class="mdi mdi-cog"></i> Админ панель</a></li>
+              {% endif %}
+              
                 </ul>
                 <div class="navbar-nav">
                     <span class="nav-item nav-link">Привет, {{ user.name }}!</span>
