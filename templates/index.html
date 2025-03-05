@@ -6,7 +6,7 @@
         <div class="search-container">
             <form class="search-form" method="GET" action="{% url 'library:search_books' %}">
                 <div class="input-group">
-                    <input type="text" class="form-control form-control-lg" placeholder="Поиск по названию, автору или жанру...">
+                    <input type="text" name="query" class="form-control form-control-lg" placeholder="Поиск по названию, автору или жанру...">
                     <button class="btn btn-primary btn-lg" type="submit">
                         <i class="mdi mdi-magnify"></i> Поиск
                     </button>
@@ -24,72 +24,31 @@
             <div class="card h-100">
                 {% if book.cover_image %}
                     <img src="{{ book.cover_image.url }}" class="card-img-top" alt="{{ book.title }}">
+                {% else %}
+                    <div class="no-image-placeholder">
+                        <i class="mdi mdi-book-variant"></i>
+                    </div>
                 {% endif %}
                 <div class="card-body">
-                    <h5 class="card-title">{{ book.title }}</h5>
-                    <p class="card-text">{{ book.author }}</p>
-                    <div class="rating">
-                        <i class="mdi mdi-star text-warning"></i>
-                        <span>{{ book.rating }}/5.00</span>
+                    <h5 class="card-title text-truncate">{{ book.title }}</h5>
+                    <p class="card-text text-truncate">{{ book.author }}</p>
+                    <div class="book-details">
+                        <div class="genres-wrapper">
+                            <span class="badge bg-primary text-truncate">{{ book.genre }}</span>
+                        </div>
+                        
+                        <div class="rating">
+                            <i class="mdi mdi-star text-warning"></i>
+                            <span>{{ book.rating }}/5.00</span>
+                        </div>
                     </div>
+                </div>
+                <div class="card-footer">
+                    <a href="#" class="btn btn-primary btn-sm w-100">Подробнее</a>
                 </div>
             </div>
         </div>
         {% endfor %}
     </div>
 </div>
-{% comment %} <div class="text-center mb-5">
-    <h1 class="display-4">Добро пожаловать в Библиотеку</h1>
-    <p class="lead">меню:</p>
-</div>
-
-<div class="menu-grid">
-    <!-- Книги -->
-    <div class="card menu-section">
-        <div class="card-body">
-            <h3 class="card-title"><i class="mdi mdi-book"></i> Книги</h3>
-            <div class="d-grid gap-2">
-                <a href="{{BASE_URL}}/book/book_list/" class="btn action-button">
-                    <i class="mdi mdi-format-list-bulleted"></i> Список книг
-                </a>
-                <a href="{{BASE_URL}}/book/add_book/" class="btn action-button">
-                    <i class="mdi mdi-plus"></i> Добавить книгу
-                </a>
-            </div>
-        </div>
-    </div>
-
-    <!-- Читатели -->
-    <div class="card menu-section">
-        <div class="card-body">
-            <h3 class="card-title"><i class="mdi mdi-account-group"></i> Читатели</h3>
-            <div class="d-grid gap-2">
-                <a href="{{BASE_URL}}/reader/reader_list/" class="btn action-button">
-                    <i class="mdi mdi-account-multiple"></i> Список читателей
-                </a>
-                <a href="{{BASE_URL}}/reader/add_reader/" class="btn action-button">
-                    <i class="mdi mdi-account-plus"></i> Добавить читателя
-                </a>
-            </div>
-        </div>
-    </div>
-
-    <!-- Управление -->
-    <div class="card menu-section">
-        <div class="card-body">
-            <h3 class="card-title"><i class="mdi mdi-cog"></i> Управление</h3>
-            <div class="d-grid gap-2">
-                <a href="{{BASE_URL}}/select_book_reader/" class="btn action-button">
-                    <i class="mdi mdi-magnify"></i> Поиск информации
-                </a>
-                <a href="{{BASE_URL}}/book/delete_book/" class="btn action-button">
-                  <i class="mdi mdi-delete"></i> Удалить книгу
-              </a>
-              <a href="{{BASE_URL}}/reader/delete_reader/" class="btn action-button">
-                <i class="mdi mdi-delete"></i> Удалить читателя
-            </a>
-            </div>
-        </div>
-    </div>
-</div> {% endcomment %}
 {% endblock %}

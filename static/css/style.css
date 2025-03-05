@@ -1,53 +1,17 @@
+/* Основные переменные */
 :root {
     --primary-color: #2c3e50;
     --secondary-color: #3498db;
     --accent-color: #e74c3c;
 }
 
+/* Базовые стили */
 body {
     font-family: 'Montserrat', sans-serif;
     background-color: #f8f9fa;
 }
 
-.card {
-    border: none;
-    border-radius: 15px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    transition: transform 0.2s;
-}
-
-.card:hover {
-    transform: translateY(-5px);
-}
-
-.menu-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 20px;
-    padding: 20px;
-}
-
-.menu-item {
-    background: white;
-    padding: 20px;
-    border-radius: 15px;
-    text-align: center;
-}
-
-.action-button {
-    background: var(--primary-color);
-    color: white;
-    padding: 12px 24px;
-    border-radius: 8px;
-    border: none;
-    transition: all 0.3s;
-}
-
-.action-button:hover {
-    background: var(--secondary-color);
-    transform: scale(1.05);
-}
-
+/* Навигация */
 .nav_bg {
     background-color: var(--primary-color);
 }
@@ -55,32 +19,9 @@ body {
 .btn.nav_bg:hover {
     color: #000 !important;
     background: var(--secondary-color);
-  }
-  
- /* Стили для всплывающих сообщений */
- #flash-messages-container {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    z-index: 1000;
-}
-.flash-message {
-    min-width: 250px;
-    margin: 5px;
-    padding: 15px;
-    color: #fff;
-    border-radius: 4px;
-    opacity: 0.9;
-    transition: opacity 0.5s, transform 0.5s;
-}
-.success {
-    background-color: #28a745;
-}
-.error {
-    background-color: #dc3545;
 }
 
-
+/* Поиск и hero секция */
 .hero-search {
     background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('/static/images/library-bg.jpg');
     background-size: cover;
@@ -104,6 +45,7 @@ body {
     padding: 0 30px;
 }
 
+/* Карточки книг */
 .card {
     border: none;
     border-radius: 15px;
@@ -115,7 +57,32 @@ body {
     transform: translateY(-5px);
 }
 
+.card-title, .card-text {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
 
+.genres-wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.25rem;
+    margin-bottom: 0.5rem;
+}
+
+.badge {
+    max-width: 100%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin: 2px;
+}
+
+.book-details {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
 
 .no-image-placeholder {
     height: 200px;
@@ -130,33 +97,11 @@ body {
     color: #ccc;
 }
 
-.book-details {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-top: 10px;
-}
-
 .availability {
     color: #28a745;
 }
 
-.nav_bg {
-    background-color: var(--primary-color);
-}
-
-.btn.nav_bg:hover {
-    color: #000 !important;
-    background: var(--secondary-color);
-}
-
-.card {
-    border: none;
-    border-radius: 15px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    transition: transform 0.2s;
-}
-
+/* Кнопки */
 .btn-primary {
     background-color: var(--primary-color);
     border: none;
@@ -164,4 +109,45 @@ body {
 
 .btn-primary:hover {
     background-color: var(--secondary-color);
+}
+
+/* Сетка меню */
+.menu-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+    padding: 20px;
+}
+
+.menu-item {
+    background: white;
+    padding: 20px;
+    border-radius: 15px;
+    text-align: center;
+}
+
+/* Всплывающие сообщения */
+#flash-messages-container {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 1000;
+}
+
+.flash-message {
+    min-width: 250px;
+    margin: 5px;
+    padding: 15px;
+    color: #fff;
+    border-radius: 4px;
+    opacity: 0.9;
+    transition: opacity 0.5s, transform 0.5s;
+}
+
+.success {
+    background-color: #28a745;
+}
+
+.error {
+    background-color: #dc3545;
 }

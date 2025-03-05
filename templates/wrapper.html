@@ -31,17 +31,14 @@
             <ul class="navbar-nav me-auto">
               {% if user.is_superuser or user.is_authenticated %}
               {% if user.is_superuser or user.role == 'librarian' %}
-                  <li class="nav-item"><a class="nav-link" href="/book/book_list/"><i class="mdi mdi-book"></i>Книги</a></li>
-                  <li class="nav-item"><a class="nav-link" href="/reader/reader_list/"><i class="mdi mdi-account-group"></i> Читатели</a></li>
-              {% endif %}
-              {% if user.is_superuser or user.role == 'admin' %}
-                  <li class="nav-item"><a class="nav-link" href="/book/add_book/"><i class="mdi mdi-plus"></i> Доб.нигу</a></li>
-                  <li class="nav-item"><a class="nav-link" href="/reader/add_reader/"><i class="mdi mdi-account-plus"></i>Доб.читателя</a></li>
-                  <li class="nav-item"><a class="nav-link" href="{% url "library:select_book_reader" %}"><i class="mdi mdi-info"></i>Инфо.кн/чит</a></li>
-                  <li class="nav-item"><a class="nav-link" href="{% url "library:book:delete_book" %}"><i class="mdi mdi-delete"></i>Удалить книгу</a></li>
-                  <li class="nav-item"><a class="nav-link" href="{% url "library:reader:delete_reader" %}"><i class="mdi mdi-delete"></i>Удалить читателя</a></li>
-                  <li class="nav-item"><a class="nav-link" href="/admin/"><i class="mdi mdi-cog"></i> Админ панель</a></li>
-              {% endif %}
+                <li class="nav-item"><a class="nav-link" href="/book/book_list/"><i class="mdi mdi-book"></i>Книги</a></li>
+                <li class="nav-item"><a class="nav-link" href="/reader/reader_list/"><i class="mdi mdi-account-group"></i> Читатели</a></li>
+            {% endif %}
+            {% if user.is_superuser or user.role == 'admin' %}
+                <li class="nav-item"><a class="nav-link" href="/book/add_book/"><i class="mdi mdi-plus"></i> Доб.книгу</a></li>
+                <li class="nav-item"><a class="nav-link" href="/reader/add_reader/"><i class="mdi mdi-account-plus"></i>Доб.читателя</a></li>
+                <li class="nav-item"><a class="nav-link" href="/admin/"><i class="mdi mdi-cog"></i> Админ панель</a></li>
+            {% endif %}       
               
                 </ul>
                 <div class="navbar-nav">
@@ -121,5 +118,7 @@
         </div>
     </footer>
     <script src="{% static 'js/js.js' %}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
 </body>
 </html>

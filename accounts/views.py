@@ -68,6 +68,8 @@ class Login(LoginView):
 class Logout(LogoutView):
     next_page = '/'
 
+
+
 class ReaderCreationForm(UserCreationForm):
     email = forms.EmailField(
         label='Электронная почта',
@@ -144,6 +146,12 @@ class ReaderCreationForm(UserCreationForm):
     def save(self, commit=True):
         user = super().save(commit=False)
         user.username = user.email
+
+        name_parts = self.cleaned_data['name'].split()
+        if len(name_parts) >= 2:
+            user.first_name = name_parts[0]
+            user.last_name = ' '.join(name_parts[1:])
+            
         if commit:
             user.save()
         return user

@@ -25,7 +25,7 @@ def reader_list(request):
 @user_passes_test(lambda u: u.is_superuser or u.groups.filter(name__in=['Администраторы', 'Библиотекари']).exists())
 def add_book(request):
     if request.method == 'POST':
-        form = BookForm(request.POST)
+        form = BookForm(request.POST, request.FILES)
         if form.is_valid():
             title = form.cleaned_data.get('title')
             author = form.cleaned_data.get('author')
@@ -123,14 +123,14 @@ def edit_reader_form(request):
 
 @login_required
 @user_passes_test(lambda u: u.is_superuser or u.groups.filter(name='Администраторы').exists())
-def delete_book(request):
+def delete_book(request, book_id):
+    book = get_object_or_404(Book, id=book_id)
     if request.method == 'POST':
-        book_id = request.POST['book_id']
-        if not Book.objects.filter(id=book_id).exists():
-            return render(request, 'library/object_id_not_found.html')
-        return redirect('library:book:confirm_delete_book', book_id=book_id)
-    messages.warning(request, 'Книга удалена из библиотеки')
-    return render(request, 'library/delete_book.html')
+        book.delete()
+        messages.success(request, 'Книга успешно удалена')
+        return redirect('library:book:book_list')
+    return render(request, 'library/confirm_delete_book.html', {'book': book})
+
 
 def confirm_delete_book(request, book_id):
     book = get_object_or_404(Book, id=book_id)
@@ -177,15 +177,20 @@ def reader_detail(request, reader_id):
     return render(request, 'library/reader_detail.html', {'reader': reader, 'books': books})
 
 
+
 def search_books(request):
-    query = request.GET.get('query', '')
-    books = Book.objects.filter(
-        Q(title__icontains=query) |
-        Q(author__icontains=query) |
-        Q(genre__icontains=query)
-    ).distinct()
+    query = request.GET.get('query', '').strip()
+    books = []
+    
+    if query:
+        books = Book.objects.filter(
+            Q(title__icontains=query) |
+            Q(author__icontains=query) |
+            Q(genre__icontains=query)
+        ).distinct()
+        
     return render(request, 'library/search_results.html', {
         'books': books,
-        'query': query
+        'query': query,
+        'total_results': len(books)
     })
-

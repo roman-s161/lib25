@@ -1,19 +1,58 @@
 {% extends "wrapper.html" %}
 
 {% block content %}
-<div class="w-50 mx-auto">
-<h1>О читателе</h1>
-<p>ФИО: {{ reader.name }}</p>
-<p>Email: {{ reader.email }}</p>
-
-<h2>Прочитанные книги:</h2>
-<ul>
-  {% for book in books %}
-    <li>{{ book.title }}</li>  <!-- Отображаем название книги -->
-  {% empty %}
-    <li>No books read yet.</li>
-  {% endfor %}
-</ul>
-<a href="{{BASE_URL}}/" class="btn btn-warning"> На главную </a>
+<div class="container">
+    <div class="card">
+        <div class="row g-0">
+            <div class="col-md-4">
+                {% if reader.profile_photo %}
+                    <img src="{{ reader.profile_photo.url }}" class="img-fluid" alt="{{ reader.name }}"
+                         style="object-fit: contain; height: 400px; width: 100%; padding: 20px;">
+                {% else %}
+                    <div class="bg-secondary text-white d-flex align-items-center justify-content-center" 
+                         style="height: 400px;">
+                        <i class="mdi mdi-account" style="font-size: 64px;"></i>
+                    </div>
+                {% endif %}
+            </div>
+            <div class="col-md-8">
+                <div class="card-body">
+                    <h2 class="card-title">{{ reader.name }}</h2>
+                    <h4 class="card-subtitle mb-3 text-muted">{{ reader.email }}</h4>
+                    
+                    <dl class="row">
+                        <dt class="col-sm-3">Читательский билет</dt>
+                        <dd class="col-sm-9">{{ reader.library_card_number }}</dd>
+                        
+                        <dt class="col-sm-3">Телефон</dt>
+                        <dd class="col-sm-9">{{ reader.phone|default:"Не указан" }}</dd>
+                        
+                        <dt class="col-sm-3">Адрес</dt>
+                        <dd class="col-sm-9">{{ reader.address|default:"Не указан" }}</dd>
+                        
+                        <dt class="col-sm-3">Роль</dt>
+                        <dd class="col-sm-9">{{ reader.get_role_display }}</dd>
+                    </dl>
+                    
+                    <h5>Прочитанные книги:</h5>
+                    <ul class="list-group">
+                        {% for book in reader.books_read.all %}
+                            <li class="list-group-item">{{ book.title }}</li>
+                        {% empty %}
+                            <li class="list-group-item">Нет прочитанных книг</li>
+                        {% endfor %}
+                    </ul>
+                    
+                    <div class="mt-4">
+                        <a href="{% url 'library:reader:reader_list' %}" class="btn btn-secondary">Назад к списку</a>
+                        {% if user.is_superuser or user.role == 'admin' %}
+                        <a href="{% url 'library:reader:edit_reader' reader.id %}" class="btn btn-primary">Редактировать</a>
+                        <a href="{% url 'library:reader:delete_reader' reader.id %}" class="btn btn-danger">Удалить</a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 {% endblock %}

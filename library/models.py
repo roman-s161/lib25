@@ -72,6 +72,11 @@ class Book(models.Model):
         verbose_name = 'Книга'
         verbose_name_plural = 'Книги'
 
+def generate_unique_library_card():
+    while True:
+        number = 'LIB-{}'.format(uuid.uuid4().hex[:8].upper())
+        if not Reader.objects.filter(library_card_number=number).exists():
+            return number
 
 class Reader(AbstractUser):
     ROLE_CHOICES = (
@@ -87,7 +92,12 @@ class Reader(AbstractUser):
     profile_photo = models.ImageField('Фото профиля', upload_to='profile_photos/', null=True, blank=True)
     address = models.TextField('Адрес проживания', blank=True)
     phone = models.CharField('Телефон', max_length=20, blank=True)
-    library_card_number = models.CharField('Номер читательского билета', max_length=50, unique=True, default='LIB-{}'.format(uuid.uuid4().hex[:8].upper()))
+    library_card_number = models.CharField(
+        'Номер читательского билета', 
+        max_length=50, 
+        unique=True, 
+        default=generate_unique_library_card
+    )
     groups = models.ManyToManyField(
         'auth.Group',
         verbose_name='groups',

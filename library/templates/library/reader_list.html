@@ -1,20 +1,46 @@
 {% extends "wrapper.html" %}
 
 {% block content %}
-<div class="w-50 mx-auto" xmlns="http://www.w3.org/1999/html">
-    <h1>Список читателей</h1>
-    <ol>
+<div class="container">
+    <h2 class="text-center mb-4">Список читателей</h2>
+    
+    <div class="row row-cols-1 row-cols-md-3 g-4">
         {% for reader in readers %}
-        <li>
-            <span class="book-author">{{ reader.name }}</span>
-            <span class="book-id">id : {{ reader.id }} </span>
-        </li>
-        <hr>
-        {% empty %}
-        <li>Нет доступных читателей</li>
+        <div class="col">
+            <div class="card h-100">
+                {% if reader.profile_photo %}
+                    <img src="{{ reader.profile_photo.url }}" class="card-img-top" alt="{{ reader.name }}" style="height: 300px; object-fit: cover;">
+                {% else %}
+                    <div class="card-img-top bg-secondary text-white d-flex align-items-center justify-content-center" style="height: 300px;">
+                        <i class="mdi mdi-account" style="font-size: 48px;"></i>
+                    </div>
+                {% endif %}
+                
+                <div class="card-body">
+                    <h5 class="card-title">{{ reader.name }}</h5>
+                    <h6 class="card-subtitle mb-2 text-muted">{{ reader.email }}</h6>
+                </div>
+                
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item"><i class="mdi mdi-card-account-details"></i> Читательский билет: {{ reader.library_card_number }}</li>
+                    <li class="list-group-item"><i class="mdi mdi-phone"></i> Телефон: {{ reader.phone|default:"Не указан" }}</li>
+                    <li class="list-group-item"><i class="mdi mdi-book-multiple"></i> Книг прочитано: {{ reader.books_read.count }}</li>
+                </ul>
+                
+                <div class="card-footer">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <small class="text-muted">Роль: {{ reader.get_role_display }}</small>
+                        <div class="btn-group">
+                            <a href="#" class="btn btn-sm btn-outline-primary">Подробнее</a>
+                            {% if user.is_superuser or user.role == 'admin' %}
+                            <a href="{% url 'library:reader:edit_reader' reader.id %}" class="btn btn-sm btn-outline-secondary">Редактировать</a>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
         {% endfor %}
-    </ol>
-    <br>
-    <a href="{{BASE_URL}}/" class="btn btn-warning"> На главную </a>
+    </div>
 </div>
 {% endblock %}

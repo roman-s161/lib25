@@ -1,11 +1,62 @@
 {% extends "wrapper.html" %}
 
 {% block content %}
-<div class="w-50 mx-auto">
-<h1>{{ book.title }}</h1>
-<p>Автор: {{ author }}</p>
-<p>Дата публикации: {{ publication_date }}</p>
-<br>
-<a href="{{BASE_URL}}/" class="btn btn-warning"> На главную </a>
+<div class="container">
+    <div class="card">
+        <div class="row g-0">
+            <div class="col-md-4">
+                {% if book.cover_image %}
+                    <img src="{{ book.cover_image.url }}" class="img-fluid" alt="{{ book.title }}" 
+                         style="object-fit: contain; height: 400px; width: 100%; padding: 20px;">
+                {% else %}
+                    <div class="bg-secondary text-white d-flex align-items-center justify-content-center" 
+                         style="height: 400px;">
+                        <i class="mdi mdi-book-open-page-variant" style="font-size: 64px;"></i>
+                    </div>
+                {% endif %}
+            </div>
+            <div class="col-md-8">
+                <div class="card-body">
+                    <h2 class="card-title">{{ book.title }}</h2>
+                    <h4 class="card-subtitle mb-3 text-muted">{{ book.author }}</h4>
+                    
+                    <!-- Полное описание книги -->
+                    <div class="mb-4">
+                        <h5>Описание:</h5>
+                        <p class="card-text" style="white-space: pre-wrap;">{{ book.description }}</p>
+                    </div>
+                
+                    
+                    <dl class="row">
+                        <dt class="col-sm-3">Жанр</dt>
+                        <dd class="col-sm-9">{{ book.genre }}</dd>
+                        
+                        <dt class="col-sm-3">Страниц</dt>
+                        <dd class="col-sm-9">{{ book.pages }}</dd>
+                        
+                        <dt class="col-sm-3">Издательство</dt>
+                        <dd class="col-sm-9">{{ book.publisher }}</dd>
+                        
+                        <dt class="col-sm-3">Язык</dt>
+                        <dd class="col-sm-9">{{ book.language }}</dd>
+                        
+                        <dt class="col-sm-3">ISBN</dt>
+                        <dd class="col-sm-9">{{ book.isbn }}</dd>
+                        
+                        <dt class="col-sm-3">Доступность</dt>
+                        <dd class="col-sm-9">{{ book.available_copies }} из {{ book.total_copies }}</dd>
+                    </dl>
+                    
+                    <div class="mt-4">
+                        <a href="{% url 'library:book:book_list' %}" class="btn btn-secondary">Назад к списку</a>
+                        {% if user.is_superuser or user.role == 'admin' %}
+                        <a href="{% url 'library:book:edit_book' book.id %}" class="btn btn-primary">Редактировать</a>
+                        <a href="{% url 'library:book:delete_book' book.id %}" class="btn btn-danger">Удалить</a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
-{% endblock%}
+{% endblock %}

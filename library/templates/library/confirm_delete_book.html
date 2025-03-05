@@ -3,12 +3,13 @@
 {% block content %}
 <div class="w-50 mx-auto">
     <h1>Подтверждение удаления книги</h1>
-    <p>Вы уверены, что хотите удалить книгу с ID {{ book_id }}?</p>
-    <form action="{% url 'library:book:confirm_delete_book' book_id=book_id %}" method="post">
+    <form action="{% url 'library:book:delete_book' book.id %}" method="post">
         {% csrf_token %}
-        <input type="hidden" name="book_id" value="{{ book_id }}">
-        <input class="btn btn-danger" type="submit" value="Удалить">
+        <p>Вы уверены, что хотите удалить книгу "{{ book.title }}"?</p>
+        <button type="submit" class="btn btn-danger">Удалить</button>
+        <a href="{% url 'library:book:book_list' %}" class="btn btn-secondary">Отмена</a>
     </form>
+    
     <br>
 <a href="{{BASE_URL}}/" class="btn btn-warning"> На главную </a>
 </div>
