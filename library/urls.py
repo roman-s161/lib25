@@ -24,6 +24,7 @@ reader_patterns = [
 ]
 
 urlpatterns = [
+    path('search/', views.search_books, name='search_books'),
     path('book/', include((book_patterns, 'book'))),
     path('reader/', include((reader_patterns, 'reader'))),
     path('select_book_reader/', views.select_book_reader, name='select_book_reader'),

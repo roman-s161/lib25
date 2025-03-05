@@ -1,4 +1,5 @@
 from .forms import BookForm, ReaderForm
+from django.db.models import Q
 from .models import Book
 from .models import Reader
 from django.contrib.auth.decorators import login_required, user_passes_test
@@ -8,7 +9,9 @@ from django.contrib import messages
 
 
 def index(request):
-    return render(request, 'index.html')
+    recommended_books = Book.objects.filter(rating__gte=4.0).order_by('-rating')[:8]
+    return render(request, 'index.html', {'recommended_books': recommended_books})
+
 
 def book_list(request):
     books = Book.objects.all()
@@ -174,4 +177,15 @@ def reader_detail(request, reader_id):
     return render(request, 'library/reader_detail.html', {'reader': reader, 'books': books})
 
 
+def search_books(request):
+    query = request.GET.get('query', '')
+    books = Book.objects.filter(
+        Q(title__icontains=query) |
+        Q(author__icontains=query) |
+        Q(genre__icontains=query)
+    ).distinct()
+    return render(request, 'library/search_results.html', {
+        'books': books,
+        'query': query
+    })
 

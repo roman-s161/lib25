@@ -1,6 +1,44 @@
 {% extends "wrapper.html" %}
 {% block content %}
-<div class="text-center mb-5">
+<div class="hero-search">
+    <div class="container">
+        <h1 class="display-4 text-center mb-5">Найдите свою следующую книгу</h1>
+        <div class="search-container">
+            <form class="search-form" method="GET" action="{% url 'library:search_books' %}">
+                <div class="input-group">
+                    <input type="text" class="form-control form-control-lg" placeholder="Поиск по названию, автору или жанру...">
+                    <button class="btn btn-primary btn-lg" type="submit">
+                        <i class="mdi mdi-magnify"></i> Поиск
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="container mt-5">
+    <h2 class="mb-4">Рекомендуемые книги</h2>
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4">
+        {% for book in recommended_books %}
+        <div class="col">
+            <div class="card h-100">
+                {% if book.cover_image %}
+                    <img src="{{ book.cover_image.url }}" class="card-img-top" alt="{{ book.title }}">
+                {% endif %}
+                <div class="card-body">
+                    <h5 class="card-title">{{ book.title }}</h5>
+                    <p class="card-text">{{ book.author }}</p>
+                    <div class="rating">
+                        <i class="mdi mdi-star text-warning"></i>
+                        <span>{{ book.rating }}/5.00</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% comment %} <div class="text-center mb-5">
     <h1 class="display-4">Добро пожаловать в Библиотеку</h1>
     <p class="lead">меню:</p>
 </div>
@@ -53,5 +91,5 @@
             </div>
         </div>
     </div>
-</div>
+</div> {% endcomment %}
 {% endblock %}
