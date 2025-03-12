@@ -48,7 +48,7 @@
                     </dl>
                     
                     <div class="mt-4">
-                        <a href="{% url 'library:book:book_list' %}" class="btn btn-secondary">Назад к списку</a>
+                        <a href="javascript:history.back()" class="btn btn-secondary">Назад</a>
                         {% if user.is_superuser or user.role == 'admin' %}
                         <a href="{% url 'library:book:edit_book' book.id %}" class="btn btn-primary">Редактировать</a>
                         <a href="{% url 'library:book:delete_book' book.id %}" class="btn btn-danger">Удалить</a>

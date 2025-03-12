@@ -45,9 +45,9 @@
                     
                     <div class="mt-4">
                         <a href="{% url 'library:reader:reader_list' %}" class="btn btn-secondary">Назад к списку</a>
-                        {% if user.is_superuser or user.role == 'admin' %}
+                        {% if user.is_superuser or perms.library.change_reader %}
                         <a href="{% url 'library:reader:edit_reader' reader.id %}" class="btn btn-primary">Редактировать</a>
-                        <a href="{% url 'library:reader:delete_reader' reader.id %}" class="btn btn-danger">Удалить</a>
+                        <a href="{% url 'library:reader:confirm_delete_reader' reader.id %}" class="btn btn-danger">Удалить</a>
                         {% endif %}
                     </div>
                 </div>

@@ -3,6 +3,7 @@ from django.contrib.auth.models import AbstractUser
 from django.utils import timezone
 import uuid
 import random
+from datetime import timedelta
 
 class Book(models.Model):
     title = models.CharField(max_length=100, verbose_name='Название')
@@ -152,4 +153,36 @@ class BookLending(models.Model):
         else:
             self.status = 'reading'
         self.save()
+
+    @classmethod
+    def borrow_book(cls, user, book, lending_period=14):
+        """
+        Позволяет зарегистрированному пользователю взять книгу.
+        lending_period – количество дней на выдачу (по умолчанию 14).
+        Если книга недоступна, генерируется исключение.
+        """
+        if not book.is_available():
+            raise Exception("Книга недоступна для выдачи")
+        borrowed_date = timezone.now().date()
+        return_due_date = borrowed_date + timedelta(days=lending_period)
+        # Создаем запись о выдаче
+        lending = cls.objects.create(
+            user=user,
+            book=book,
+            borrowed_date=borrowed_date,
+            return_due_date=return_due_date,
+            status='reading'
+        )
+        # Уменьшаем количество доступных экземпляров книги
+        book.decrease_available_copies()
+        return lending
+
+    @classmethod
+    def get_overdue_lendings(cls):
+        """
+        Возвращает набор выдач со статусом 'overdue'
+        Для использования библиотекарями и администраторами
+        """
+        today = timezone.now().date()
+        return cls.objects.filter(status='overdue')
 

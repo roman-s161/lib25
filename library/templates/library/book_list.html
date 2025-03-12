@@ -45,9 +45,6 @@
                         <small class="text-muted">ISBN: {{ book.isbn }}</small>
                         <div class="btn-group">
                             <a href="{% url 'library:book:book_detail' book.id %}" class="btn btn-sm btn-primary">Подробнее</a>
-                            {% if user.is_superuser or user.role == 'admin' %}
-                            <a href="{% url 'library:book:delete_book' book.id %}" class="btn btn-sm btn-danger">Удалить</a>
-                            {% endif %}
                         </div>
                         
                     </div>
