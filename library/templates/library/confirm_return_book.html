@@ -1,0 +1,91 @@
+{% extends "wrapper.html" %}
+
+{% block content %}
+<div class="container mt-4">
+  <div class="card">
+    <div class="card-header nav_bg text-white">
+      <h2 class="mb-0">Подтверждение возврата книги</h2>
+    </div>
+    <div class="card-body">
+      <div class="row">
+        <div class="col-md-6">
+          <h4>Информация о книге:</h4>
+          <table class="table">
+            <tr>
+              <th>Название:</th>
+              <td>{{ lending.book.title }}</td>
+            </tr>
+            <tr>
+              <th>Автор:</th>
+              <td>{{ lending.book.author }}</td>
+            </tr>
+            <tr>
+              <th>ISBN:</th>
+              <td>{{ lending.book.isbn }}</td>
+            </tr>
+          </table>
+        </div>
+        <div class="col-md-6">
+          <h4>Информация о читателе:</h4>
+          <table class="table">
+            <tr>
+              <th>ФИО:</th>
+              <td>{{ lending.user.name }}</td>
+            </tr>
+            <tr>
+              <th>Читательский билет:</th>
+              <td>{{ lending.user.library_card_number }}</td>
+            </tr>
+            <tr>
+              <th>Телефон:</th>
+              <td>{{ lending.user.phone }}</td>
+            </tr>
+          </table>
+        </div>
+      </div>
+      
+      <div class="row mt-3">
+        <div class="col-md-12">
+          <h4>Информация о выдаче:</h4>
+          <table class="table">
+            <tr>
+              <th>Дата выдачи:</th>
+              <td>{{ lending.borrowed_date|date:"d.m.Y" }}</td>
+            </tr>
+            <tr>
+              <th>Срок возврата:</th>
+              <td class="text-danger">{{ lending.return_due_date|date:"d.m.Y" }}</td>
+            </tr>
+            <tr>
+              <th>Просрочено:</th>
+              <td class="text-danger">
+                {% with days_overdue=lending.return_due_date|timesince:now %}
+                  {{ days_overdue }}
+                {% endwith %}
+              </td>
+            </tr>
+          </table>
+        </div>
+      </div>
+      
+      <div class="alert alert-warning mt-3">
+        <i class="mdi mdi-alert"></i> Вы собираетесь отметить книгу как возвращенную. Это действие нельзя отменить.
+      </div>
+      
+      <div class="d-flex justify-content-between mt-4">
+        <a href="{% url 'library:overdue_lendings' %}" class="btn btn-secondary">
+          <i class="mdi mdi-arrow-left"></i> Вернуться к списку
+        </a>
+        <!-- Изменим форму для отправки запроса на новый URL -->
+<form action="{% url 'library:librarian_return_book' lending.id %}" method="post">
+    {% csrf_token %}
+    <button type="submit" class="btn btn-success">
+      <i class="mdi mdi-check"></i> Подтвердить возврат
+    </button>
+  </form>
+  
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

@@ -30,23 +30,20 @@
         <div class="collapse navbar-collapse" id="navbarContent">
             <ul class="navbar-nav me-auto">
               {% if user.is_superuser or user.is_authenticated %}
-              {% if user.is_superuser or user.role == 'librarian' %}
-                <li class="nav-item"><a class="nav-link" href="/book/book_list/"><i class="mdi mdi-book"></i>Книги</a></li>
+              <li class="nav-item"><a class="nav-link" href="/book/book_list/"><i class="mdi mdi-book"></i>Книги</a></li>
+              {% if user.is_superuser or user.role == 'admin' or user.role == 'librarian' %}
                 <li class="nav-item"><a class="nav-link" href="/reader/reader_list/"><i class="mdi mdi-account-group"></i> Читатели</a></li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'library:overdue_lendings' %}">
+                        <i class="mdi mdi-clock-alert text-danger"></i> Просроченные выдачи
+                    </a>
+                </li>
             {% endif %}
             {% if user.is_superuser or user.role == 'admin' %}
                 <li class="nav-item"><a class="nav-link" href="/book/add_book/"><i class="mdi mdi-plus"></i> Доб.книгу</a></li>
                 <li class="nav-item"><a class="nav-link" href="/reader/add_reader/"><i class="mdi mdi-account-plus"></i>Доб.читателя</a></li>
                 <li class="nav-item"><a class="nav-link" href="/admin/"><i class="mdi mdi-cog"></i> Админ панель</a></li>
-                  {% if user.is_superuser or user.role == 'admin' or user.role == 'librarian' %}
-
-
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'library:overdue_lendings' %}">
-                            <i class="mdi mdi-clock-alert"></i> ! ! !</a>
-                        </a>
-                    </li>
-                {% endif %}
+                  
                 
             {% endif %}       
               
@@ -92,7 +89,7 @@
 
     <footer class="footer mt-auto py-3 bg-light">
         <div class="container text-center">
-            <span class="text-muted">© 2024 Библиотека</span>
+            <span class="text-muted">© 2025 Библиотека</span>
         </div>
     </footer>
     <script src="{% static 'js/js.js' %}"></script>

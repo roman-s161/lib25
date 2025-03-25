@@ -14,7 +14,7 @@ def index(request):
     recommended_books = Book.objects.filter(rating__gte=4.0).order_by('-rating')[:8]
     return render(request, 'index.html', {'recommended_books': recommended_books})
 
-
+@login_required
 def book_list(request):
     books = Book.objects.all()
     return render(request, 'library/book_list.html', {'books': books})
@@ -82,7 +82,6 @@ def edit_book_form(request):
     return render(request, 'library/edit_book_form.html', {'form': form})
 
 @login_required
-@user_passes_test(lambda u: u.is_superuser or u.groups.filter(name__in=['Администраторы', 'Библиотекари']).exists())
 def book_detail(request, book_id):
     book = get_object_or_404(Book, id=book_id)
     author = book.author
@@ -214,7 +213,8 @@ def borrow_book(request, book_id):
 @user_passes_test(lambda u: u.is_superuser or u.groups.filter(name__in=['Администраторы', 'Библиотекари']).exists())
 def overdue_lendings(request):
     lendings = BookLending.get_overdue_lendings()
-    return render(request, 'library/overdue_lendings.html', {'lendings': lendings})
+    now = timezone.now().date()
+    return render(request, 'library/overdue_lendings.html', {'lendings': lendings, 'now': now})
 
 # Личный кабинет пользователя - главная страница
 @login_required
@@ -328,3 +328,36 @@ def return_book(request, lending_id):
     return render(request, 'library/profile/return_book.html', {
         'lending': lending
     })
+
+@login_required
+@user_passes_test(lambda u: u.is_superuser or u.groups.filter(name__in=['Администраторы', 'Библиотекари']).exists())
+def confirm_return_book(request, lending_id):
+    lending = get_object_or_404(BookLending, id=lending_id)
+    now = timezone.now().date()
+    
+    return render(request, 'library/confirm_return_book.html', {
+        'lending': lending,
+        'now': now
+    })
+
+@login_required
+@user_passes_test(lambda u: u.is_superuser or u.groups.filter(name__in=['Администраторы', 'Библиотекари']).exists())
+def librarian_return_book(request, lending_id):
+    lending = get_object_or_404(BookLending, id=lending_id)
+    
+    if request.method == 'POST':
+        lending.status = 'returned'
+        lending.returned_date = timezone.now().date()
+        lending.save()
+        
+        lending.book.increase_available_copies()
+        
+        messages.success(request, f'Книга "{lending.book.title}" успешно возвращена')
+        return redirect('library:overdue_lendings')
+    
+    now = timezone.now().date()
+    return render(request, 'library/confirm_return_book.html', {
+        'lending': lending,
+        'now': now
+    })
+

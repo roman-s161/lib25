@@ -47,4 +47,7 @@ urlpatterns = [
     path('', views.index, name='index'),
     path('books/<int:book_id>/borrow/', views.borrow_book, name='borrow_book'),
     path('lendings/overdue/', views.overdue_lendings, name='overdue_lendings'),
+    path('lendings/<int:lending_id>/confirm-return/', views.confirm_return_book, name='confirm_return_book'),
+    path('lendings/<int:lending_id>/librarian-return/', views.librarian_return_book, name='librarian_return_book'),
+
 ]
