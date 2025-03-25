@@ -185,4 +185,21 @@ class BookLending(models.Model):
         """
         today = timezone.now().date()
         return cls.objects.filter(status='overdue')
+    
+    def __str__(self):
+        return f"{self.book.title} - {self.user.name}"
+    
+    class Meta:
+        verbose_name = 'Предоставление книги'
+        verbose_name_plural = 'Предоставление книг'
+        ordering = ['-borrowed_date']
+        indexes = [
+            models.Index(fields=['status']),
+            models.Index(fields=['borrowed_date']),
+            models.Index(fields=['return_due_date']),
+        ]
+        permissions = [
+            ("can_mark_returned", "Может отмечать книги как возвращенные"),
+            ("can_view_all_lendings", "Может просматривать все выдачи книг"),
+        ]
 
