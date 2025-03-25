@@ -151,3 +151,10 @@ body {
 .error {
     background-color: #dc3545;
 }
+
+.list-group-item.active {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+    color: #fff;
+}
+

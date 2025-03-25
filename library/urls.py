@@ -33,10 +33,16 @@ profile_patterns = [
 ]
 
 urlpatterns = [
-    path('profile/', include((profile_patterns, 'profile'))),
-    path('search/', views.search_books, name='search_books'),
+    
     path('book/', include((book_patterns, 'book'))),
     path('reader/', include((reader_patterns, 'reader'))),
+    path('profile/', include((profile_patterns, 'profile'))),
+
+
+
+
+    
+    path('search/', views.search_books, name='search_books'),
     path('select_book_reader/', views.select_book_reader, name='select_book_reader'),
     path('', views.index, name='index'),
     path('books/<int:book_id>/borrow/', views.borrow_book, name='borrow_book'),
