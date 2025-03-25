@@ -1,0 +1,34 @@
+{% extends "library/profile/base_profile.html" %}
+
+{% block profile_content %}
+<div class="card">
+    <div class="card-header">
+        <h4>Возврат книги</h4>
+    </div>
+    <div class="card-body">
+        <div class="alert alert-info">
+            <p>Вы собираетесь вернуть книгу:</p>
+            <h5>{{ lending.book.title }}</h5>
+            <p>Автор: {{ lending.book.author }}</p>
+            <p>Дата выдачи: {{ lending.borrowed_date }}</p>
+            <p>Срок возврата: {{ lending.return_due_date }}</p>
+            
+            {% if lending.return_due_date < today %}
+                <div class="alert alert-danger">
+                    <strong>Внимание!</strong> Срок возврата книги истек.
+                </div>
+            {% endif %}
+        </div>
+        
+        <p>Пожалуйста, подтвердите возврат книги. После подтверждения книга будет отмечена как возвращенная.</p>
+        
+        <form method="post">
+            {% csrf_token %}
+            <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                <a href="{% url 'library:profile:borrowed_books' %}" class="btn btn-secondary me-md-2">Отмена</a>
+                <button type="submit" class="btn btn-primary">Подтвердить возврат</button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

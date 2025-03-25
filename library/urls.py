@@ -23,10 +23,22 @@ reader_patterns = [
     path('edit_reader_form/', views.edit_reader_form, name='edit_reader_form'),
 ]
 
+
+profile_patterns = [
+    path('dashboard/', views.user_dashboard, name='dashboard'),
+    path('borrowed_books/', views.user_borrowed_books, name='borrowed_books'),
+    path('reading_history/', views.user_reading_history, name='reading_history'),
+    path('edit_profile/', views.edit_user_profile, name='edit_profile'),
+    path('return_book/<int:lending_id>/', views.return_book, name='return_book'),
+]
+
 urlpatterns = [
+    path('profile/', include((profile_patterns, 'profile'))),
     path('search/', views.search_books, name='search_books'),
     path('book/', include((book_patterns, 'book'))),
     path('reader/', include((reader_patterns, 'reader'))),
     path('select_book_reader/', views.select_book_reader, name='select_book_reader'),
     path('', views.index, name='index'),
+    path('books/<int:book_id>/borrow/', views.borrow_book, name='borrow_book'),
+    path('lendings/overdue/', views.overdue_lendings, name='overdue_lendings'),
 ]

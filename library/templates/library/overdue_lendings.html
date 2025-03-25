@@ -1,0 +1,31 @@
+{% extends "wrapper.html" %}
+
+{% block content %}
+  <h2>Просроченные выдачи</h2>
+  {% if lendings %}
+  <table>
+    <thead>
+      <tr>
+        <th>ID выдачи</th>
+        <th>Пользователь</th>
+        <th>Книга</th>
+        <th>Дата выдачи</th>
+        <th>Срок возврата</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for lending in lendings %}
+      <tr>
+        <td>{{ lending.id }}</td>
+        <td>{{ lending.user.name }}</td>
+        <td>{{ lending.book.title }}</td>
+        <td>{{ lending.borrowed_date }}</td>
+        <td>{{ lending.return_due_date }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% else %}
+  <p>Нет просроченных выдач</p>
+  {% endif %}
+{% endblock %}

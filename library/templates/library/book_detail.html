@@ -49,6 +49,11 @@
                     
                     <div class="mt-4">
                         <a href="javascript:history.back()" class="btn btn-secondary">Назад</a>
+                        <!-- Добавьте эту кнопку в блок с другими кнопками -->
+                        {% if user.is_authenticated and book.available_copies > 0 %}
+                        <a href="{% url 'library:borrow_book' book.id %}" class="btn btn-success">Взять книгу</a>
+                        {% endif %}
+
                         {% if user.is_superuser or user.role == 'admin' %}
                         <a href="{% url 'library:book:edit_book' book.id %}" class="btn btn-primary">Редактировать</a>
                         <a href="{% url 'library:book:delete_book' book.id %}" class="btn btn-danger">Удалить</a>

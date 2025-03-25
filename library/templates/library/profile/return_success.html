@@ -1,0 +1,19 @@
+{% extends "library/profile/base_profile.html" %}
+
+{% block profile_content %}
+<div class="card">
+    <div class="card-header">
+        <h4>Книга успешно возвращена</h4>
+    </div>
+    <div class="card-body">
+        <div class="alert alert-success">
+            <p>Книга "{{ book.title }}" успешно возвращена в библиотеку.</p>
+        </div>
+        
+        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+            <a href="{% url 'library:profile:borrowed_books' %}" class="btn btn-primary me-md-2">Мои книги</a>
+            <a href="{% url 'library:book:book_list' %}" class="btn btn-secondary">Каталог книг</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,11 @@
+{% extends "wrapper.html" %}
+
+{% block content %}
+  <h2>Выдача книги: {{ book.title }}</h2>
+  <p>Вы действительно хотите взять эту книгу?</p>
+  <form method="post">
+    {% csrf_token %}
+    <button type="submit">Взять книгу</button>
+    <a href="{% url 'library:book:book_detail' book.id %}">Отмена</a>
+  </form>
+{% endblock %}

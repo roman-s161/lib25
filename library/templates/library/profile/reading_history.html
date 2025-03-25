@@ -1,0 +1,47 @@
+{% extends "library/profile/base_profile.html" %}
+
+{% block profile_content %}
+<div class="card">
+    <div class="card-header">
+        <h4>История чтения</h4>
+    </div>
+    <div class="card-body">
+        {% if reading_history %}
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>Название</th>
+                            <th>Автор</th>
+                            <th>Дата выдачи</th>
+                            <th>Дата возврата</th>
+                            <th>Длительность</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for lending in reading_history %}
+                        <tr>
+                            <td>
+                                <a href="{% url 'library:book:book_detail' lending.book.id %}">{{ lending.book.title }}</a>
+                            </td>
+                            <td>{{ lending.book.author }}</td>
+                            <td>{{ lending.borrowed_date }}</td>
+                            <td>{{ lending.returned_date }}</td>
+                            <td>
+                                {% with days=lending.returned_date|timeuntil:lending.borrowed_date %}
+                                    {{ days }}
+                                {% endwith %}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% else %}
+            <div class="alert alert-info">
+                У вас пока нет истории чтения. <a href="{% url 'library:book:book_list' %}">Перейти в каталог книг</a>
+            </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

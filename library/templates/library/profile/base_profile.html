@@ -1,0 +1,44 @@
+{% extends "wrapper.html" %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row">
+        <!-- Боковое меню -->
+        <div class="col-md-3">
+            <div class="card">
+                <div class="card-header">
+                    <h5>Личный кабинет</h5>
+                </div>
+                <div class="list-group list-group-flush">
+                    <a href="{% url 'library:profile:dashboard' %}" class="list-group-item list-group-item-action {% if request.resolver_match.url_name == 'dashboard' %}active{% endif %}">
+                        <i class="mdi mdi-view-dashboard"></i> Панель управления
+                    </a>
+                    <a href="{% url 'library:profile:borrowed_books' %}" class="list-group-item list-group-item-action {% if request.resolver_match.url_name == 'borrowed_books' %}active{% endif %}">
+                        <i class="mdi mdi-book-open-variant"></i> Мои книги
+                    </a>
+                    <a href="{% url 'library:profile:reading_history' %}" class="list-group-item list-group-item-action {% if request.resolver_match.url_name == 'reading_history' %}active{% endif %}">
+                        <i class="mdi mdi-history"></i> История чтения
+                    </a>
+                    <a href="{% url 'library:profile:edit_profile' %}" class="list-group-item list-group-item-action {% if request.resolver_match.url_name == 'edit_profile' %}active{% endif %}">
+                        <i class="mdi mdi-account-edit"></i> Редактировать профиль
+                    </a>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Основное содержимое -->
+        <div class="col-md-9">
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                        {{ message }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                {% endfor %}
+            {% endif %}
+            
+            {% block profile_content %}{% endblock %}
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,110 @@
+{% extends "library/profile/base_profile.html" %}
+
+{% block profile_content %}
+<div class="card mb-4">
+    <div class="card-header">
+        <h4>Панель управления</h4>
+    </div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-md-4">
+                <div class="card text-center mb-3">
+                    <div class="card-body">
+                        <h1 class="display-4">{{ active_lendings.count }}</h1>
+                        <p class="text-muted">Книг на руках</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card text-center mb-3">
+                    <div class="card-body">
+                        <h1 class="display-4">{{ overdue_count }}</h1>
+                        <p class="text-muted">Просрочено</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card text-center mb-3">
+                    <div class="card-body">
+                        <h1 class="display-4">{{ read_books_count }}</h1>
+                        <p class="text-muted">Прочитано книг</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% if active_lendings %}
+<div class="card mb-4">
+    <div class="card-header d-flex justify-content-between align-items-center">
+        <h5>Книги на руках</h5>
+        <a href="{% url 'library:profile:borrowed_books' %}" class="btn btn-sm btn-primary">Все книги</a>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>Название</th>
+                        <th>Дата выдачи</th>
+                        <th>Срок возврата</th>
+                        <th>Статус</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for lending in active_lendings|slice:":3" %}
+                    <tr>
+                        <td>
+                            <a href="{% url 'library:book:book_detail' lending.book.id %}">{{ lending.book.title }}</a>
+                        </td>
+                        <td>{{ lending.borrowed_date }}</td>
+                        <td>{{ lending.return_due_date }}</td>
+                        <td>
+                            {% if lending.return_due_date < today %}
+                                <span class="badge bg-danger">Просрочена</span>
+                            {% else %}
+                                <span class="badge bg-success">Активна</span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endif %}
+
+{% if recommended_books %}
+<div class="card">
+    <div class="card-header">
+        <h5>Рекомендуемые книги</h5>
+    </div>
+    <div class="card-body">
+        <div class="row">
+            {% for book in recommended_books %}
+            <div class="col-md-4 mb-3">
+                <div class="card h-100">
+                    {% if book.cover_image %}
+                        <img src="{{ book.cover_image.url }}" class="card-img-top" alt="{{ book.title }}" style="height: 150px; object-fit: contain;">
+                    {% else %}
+                        <div class="card-img-top bg-secondary text-white d-flex align-items-center justify-content-center" style="height: 150px;">
+                            <i class="mdi mdi-book-open-page-variant" style="font-size: 48px;"></i>
+                        </div>
+                    {% endif %}
+                    <div class="card-body">
+                        <h6 class="card-title">{{ book.title }}</h6>
+                        <p class="card-text small">{{ book.author }}</p>
+                    </div>
+                    <div class="card-footer">
+                        <a href="{% url 'library:book:book_detail' book.id %}" class="btn btn-sm btn-primary">Подробнее</a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endif %}
+{% endblock %}

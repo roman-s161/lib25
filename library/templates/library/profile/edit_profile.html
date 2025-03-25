@@ -1,0 +1,63 @@
+{% extends "library/profile/base_profile.html" %}
+
+{% block profile_content %}
+<div class="card">
+    <div class="card-header">
+        <h4>Редактирование профиля</h4>
+    </div>
+    <div class="card-body">
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            
+            <div class="row mb-4">
+                <div class="col-md-3 text-center">
+                    {% if user.profile_photo %}
+                        <img src="{{ user.profile_photo.url }}" alt="Фото профиля" class="img-fluid rounded-circle mb-3" style="max-width: 150px; max-height: 150px;">
+                    {% else %}
+                        <div class="bg-secondary text-white d-flex align-items-center justify-content-center rounded-circle mb-3" style="width: 150px; height: 150px; margin: 0 auto;">
+                            <i class="mdi mdi-account" style="font-size: 64px;"></i>
+                        </div>
+                    {% endif %}
+                    
+                    <div class="mb-3">
+                        <label for="profile_photo" class="form-label">Изменить фото</label>
+                        <input type="file" class="form-control" id="profile_photo" name="profile_photo">
+                    </div>
+                </div>
+                
+                <div class="col-md-9">
+                    <div class="mb-3">
+                        <label for="name" class="form-label">ФИО</label>
+                        <input type="text" class="form-control" id="name" name="name" value="{{ user.name }}" required>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="email" class="form-label">Email</label>
+                        <input type="email" class="form-control" id="email" name="email" value="{{ user.email }}" required>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="phone" class="form-label">Телефон</label>
+                        <input type="tel" class="form-control" id="phone" name="phone" value="{{ user.phone }}">
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="address" class="form-label">Адрес</label>
+                        <textarea class="form-control" id="address" name="address" rows="3">{{ user.address }}</textarea>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label class="form-label">Номер читательского билета</label>
+                        <input type="text" class="form-control" value="{{ user.library_card_number }}" readonly>
+                        <small class="text-muted">Номер читательского билета не может быть изменен</small>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                <button type="submit" class="btn btn-primary">Сохранить изменения</button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

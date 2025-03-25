@@ -1,11 +1,13 @@
 from .forms import BookForm, ReaderForm
 from django.db.models import Q
-from .models import Book
-from .models import Reader
+from .models import Book, Reader, BookLending
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.shortcuts import render, redirect, get_object_or_404
 from .forms import BookIdForm, ReaderIdForm, SelectBookReaderForm
 from django.contrib import messages
+from django.utils import timezone
+
+
 
 
 def index(request):
@@ -193,4 +195,136 @@ def search_books(request):
         'books': books,
         'query': query,
         'total_results': len(books)
+    })
+
+
+@login_required
+def borrow_book(request, book_id):
+    book = get_object_or_404(Book, id=book_id)
+    if request.method == 'POST':
+        try:
+            BookLending.borrow_book(request.user, book)
+            messages.success(request, 'Вы успешно взяли книгу')
+        except Exception as e:
+            messages.error(request, str(e))
+        return redirect('library:book:book_detail', book_id=book.id)
+    return render(request, 'library/borrow_book.html', {'book': book})
+
+@login_required
+@user_passes_test(lambda u: u.is_superuser or u.groups.filter(name__in=['Администраторы', 'Библиотекари']).exists())
+def overdue_lendings(request):
+    lendings = BookLending.get_overdue_lendings()
+    return render(request, 'library/overdue_lendings.html', {'lendings': lendings})
+
+# Личный кабинет пользователя - главная страница
+@login_required
+def user_dashboard(request):
+    # Получаем текущие выдачи книг пользователя
+    active_lendings = BookLending.objects.filter(
+        user=request.user,
+        status='reading'
+    ).order_by('return_due_date')
+    
+    # Получаем количество просроченных книг
+    overdue_count = active_lendings.filter(
+        return_due_date__lt=timezone.now().date()
+    ).count()
+    
+    # Получаем общее количество прочитанных книг
+    read_books_count = BookLending.objects.filter(
+        user=request.user,
+        status='returned'
+    ).count()
+    
+    # Получаем рекомендованные книги (например, по жанрам, которые читал пользователь)
+    # Это простая реализация - можно улучшить алгоритм рекомендаций
+    favorite_genres = BookLending.objects.filter(
+        user=request.user
+    ).values_list('book__genre', flat=True).distinct()
+    
+    recommended_books = Book.objects.filter(
+        genre__in=favorite_genres
+    ).exclude(
+        booklending__user=request.user
+    ).order_by('-rating')[:5]
+    
+    context = {
+        'active_lendings': active_lendings,
+        'overdue_count': overdue_count,
+        'read_books_count': read_books_count,
+        'recommended_books': recommended_books,
+    }
+    
+    return render(request, 'library/profile/dashboard.html', context)
+
+# Список книг, которые пользователь сейчас читает
+@login_required
+def user_borrowed_books(request):
+    active_lendings = BookLending.objects.filter(
+        user=request.user,
+        status='reading'
+    ).order_by('return_due_date')
+    
+    return render(request, 'library/profile/borrowed_books.html', {
+        'active_lendings': active_lendings
+    })
+
+# История чтения пользователя
+@login_required
+def user_reading_history(request):
+    reading_history = BookLending.objects.filter(
+        user=request.user,
+        status='returned'
+    ).order_by('-returned_date')
+    
+    return render(request, 'library/profile/reading_history.html', {
+        'reading_history': reading_history
+    })
+
+# Редактирование профиля пользователя
+@login_required
+def edit_user_profile(request):
+    if request.method == 'POST':
+        # Обновляем только определенные поля
+        user = request.user
+        user.name = request.POST.get('name', user.name)
+        user.email = request.POST.get('email', user.email)
+        user.phone = request.POST.get('phone', user.phone)
+        user.address = request.POST.get('address', user.address)
+        
+        # Обработка загрузки фото профиля
+        if 'profile_photo' in request.FILES:
+            user.profile_photo = request.FILES['profile_photo']
+        
+        user.save()
+        messages.success(request, 'Профиль успешно обновлен')
+        return redirect('library:profile:dashboard')
+    
+    return render(request, 'library/profile/edit_profile.html', {
+        'user': request.user
+    })
+
+# Возврат книги пользователем (запрос на возврат)
+@login_required
+def return_book(request, lending_id):
+    lending = get_object_or_404(BookLending, id=lending_id, user=request.user)
+    
+    if lending.status != 'reading':
+        messages.error(request, 'Эта книга уже возвращена или не может быть возвращена')
+        return redirect('library:profile:borrowed_books')
+    
+    if request.method == 'POST':
+        # Отмечаем книгу как возвращенную
+        lending.status = 'returned'
+        lending.returned_date = timezone.now().date()
+        lending.save()
+        
+        # Увеличиваем количество доступных копий
+        lending.book.increase_available_copies()
+        
+        messages.success(request, f'Книга "{lending.book.title}" успешно возвращена')
+        return redirect('library:profile:borrowed_books')
+    
+    return render(request, 'library/profile/return_book.html', {
+        'lending': lending
     })
