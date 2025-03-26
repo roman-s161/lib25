@@ -2,7 +2,7 @@
 
 {% block content %}
 <div class="container">
-    <div class="card">
+    <div class="card book-detail-card">
         <div class="row g-0">
             <div class="col-md-4">
                 {% if book.cover_image %}
@@ -23,7 +23,9 @@
                     <!-- Полное описание книги -->
                     <div class="mb-4">
                         <h5>Описание:</h5>
-                        <p class="card-text" style="white-space: pre-wrap;">{{ book.description }}</p>
+                        <div class="book-description">
+                            <p class="card-text" style="white-space: pre-wrap;">{{ book.description }}</p>
+                        </div>
                     </div>
                 
                     
@@ -49,7 +51,6 @@
                     
                     <div class="mt-4">
                         <a href="javascript:history.back()" class="btn btn-secondary">Назад</a>
-                        <!-- Добавьте эту кнопку в блок с другими кнопками -->
                         {% if user.is_authenticated and book.available_copies > 0 %}
                         <a href="{% url 'library:borrow_book' book.id %}" class="btn btn-success">Взять книгу</a>
                         {% endif %}

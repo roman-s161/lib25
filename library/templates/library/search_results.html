@@ -12,7 +12,9 @@
             <div class="col">
                 <div class="card h-100">
                     {% if book.cover_image %}
-                        <img src="{{ book.cover_image.url }}" class="card-img-top" alt="{{ book.title }}">
+                        <div class="card-img-top">
+                            <img src="{{ book.cover_image.url }}" alt="{{ book.title }}">
+                        </div>
                     {% else %}
                         <div class="no-image-placeholder">
                             <i class="mdi mdi-book-variant"></i>
@@ -30,11 +32,11 @@
                                 <i class="mdi mdi-star text-warning"></i>
                                 <span>{{ book.rating }}/5.00</span>
                             </div>
-                        </div>
-                        <p class="card-text small text-muted mt-2">{{ book.description|truncatewords:20 }}</p>
-                        <div class="availability mt-2">
-                            <i class="mdi mdi-bookmark-check"></i>
-                            Доступно: {{ book.available_copies }} из {{ book.total_copies }}
+                            
+                            <div class="availability mt-2">
+                                <i class="mdi mdi-bookmark-check"></i>
+                                Доступно: {{ book.available_copies }} из {{ book.total_copies }}
+                            </div>
                         </div>
                     </div>
                     <div class="card-footer">

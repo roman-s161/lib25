@@ -23,12 +23,14 @@
         <div class="col">
             <div class="card h-100">
                 {% if book.cover_image %}
-                    <img src="{{ book.cover_image.url }}" class="card-img-top" alt="{{ book.title }}">
-                {% else %}
-                    <div class="no-image-placeholder">
-                        <i class="mdi mdi-book-variant"></i>
-                    </div>
-                {% endif %}
+    <div class="card-img-top">
+        <img src="{{ book.cover_image.url }}" alt="{{ book.title }}">
+    </div>
+{% else %}
+    <div class="no-image-placeholder">
+        <i class="mdi mdi-book-variant"></i>
+    </div>
+{% endif %}
                 <div class="card-body">
                     <h5 class="card-title text-truncate">{{ book.title }}</h5>
                     <p class="card-text text-truncate">{{ book.author }}</p>
