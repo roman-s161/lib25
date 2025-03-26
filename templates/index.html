@@ -21,7 +21,7 @@
     <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4">
         {% for book in recommended_books %}
         <div class="col">
-            <div class="card h-100">
+            <div class="card book-card h-100">
                 {% if book.cover_image %}
     <div class="card-img-top">
         <img src="{{ book.cover_image.url }}" alt="{{ book.title }}">
