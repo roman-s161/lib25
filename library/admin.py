@@ -3,6 +3,8 @@ from .models import Book, Reader, BookLending
 from django.contrib.auth.models import Group
 from django.utils.html import format_html
 from django.utils import timezone
+from django.contrib.auth.admin import UserAdmin
+
 
 @admin.register(Book)
 class BookAdmin(admin.ModelAdmin):
@@ -14,20 +16,37 @@ class BookAdmin(admin.ModelAdmin):
     list_per_page = 20
 
 @admin.register(Reader)
-class ReaderAdmin(admin.ModelAdmin):
+class ReaderAdmin(UserAdmin):  # Изменено с admin.ModelAdmin на UserAdmin
     list_display = ('id', 'get_full_name', 'get_groups', 'is_staff', 'email')
     list_display_links = ('get_full_name',)
     list_filter = ('groups', 'is_staff')
     search_fields = ('first_name', 'last_name', 'email')
+
+    # Настройка полей для отображения в админке
+    fieldsets = (
+        (None, {'fields': ('username', 'password')}),
+        ('Персональная информация', {'fields': ('name', 'email', 'phone', 'address', 'profile_photo')}),
+        ('Права доступа', {'fields': ('is_active', 'is_staff', 'is_superuser', 'groups', 'user_permissions')}),
+        ('Важные даты', {'fields': ('last_login', 'date_joined')}),
+    )
+    
+    # Настройка полей при создании нового пользователя
+    add_fieldsets = (
+        (None, {
+            'classes': ('wide',),
+            'fields': ('username', 'email', 'name', 'password1', 'password2'),
+        }),
+    )
     
     def get_full_name(self, obj):
-        return f"{obj.first_name} {obj.last_name}".strip()
+        return f"{obj.first_name} {obj.last_name}".strip() or obj.name
     
     def get_groups(self, obj):
         return ", ".join([group.name for group in obj.groups.all()])
     
     get_full_name.short_description = 'ФИО'
     get_groups.short_description = 'Группы'
+
 
 @admin.register(BookLending)
 class BookLendingAdmin(admin.ModelAdmin):

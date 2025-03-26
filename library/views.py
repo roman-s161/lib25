@@ -281,13 +281,24 @@ def user_reading_history(request):
         'reading_history': reading_history
     })
 
-# Редактирование профиля пользователя
 @login_required
 def edit_user_profile(request):
     if request.method == 'POST':
         # Обновляем только определенные поля
         user = request.user
+        
+        # Обновляем поле name
         user.name = request.POST.get('name', user.name)
+        
+        # Также обновляем first_name и last_name для отображения в админке
+        name_parts = user.name.split()
+        if len(name_parts) >= 1:
+            user.first_name = name_parts[0]
+            if len(name_parts) >= 2:
+                user.last_name = ' '.join(name_parts[1:])
+            else:
+                user.last_name = ''
+        
         user.email = request.POST.get('email', user.email)
         user.phone = request.POST.get('phone', user.phone)
         user.address = request.POST.get('address', user.address)
