@@ -154,7 +154,7 @@ def confirm_delete_reader(request, reader_id):
     reader = get_object_or_404(Reader, id=reader_id)
     if request.method == 'POST':
         reader.delete()
-        return redirect('library:reader:reader_list')  # Перенаправление на страницу со списком читателей
+        return redirect('library:reader:reader_list')  
     return render(request, 'library/confirm_delete_reader.html', {'reader': reader, 'reader_id': reader_id})
 
 @login_required
@@ -237,7 +237,6 @@ def user_dashboard(request):
     ).count()
     
     # Получаем рекомендованные книги (например, по жанрам, которые читал пользователь)
-    # Это простая реализация - можно улучшить алгоритм рекомендаций
     favorite_genres = BookLending.objects.filter(
         user=request.user
     ).values_list('book__genre', flat=True).distinct()
